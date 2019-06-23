@@ -1,0 +1,28 @@
+// [START declaration]
+syntax = "proto3";
+// Namespace
+package arithmetics;
+// [END declaration]
+
+// [START service]
+// The arithmetic service definition.
+service Arithmetics {
+    rpc Add (TwoValueRequest) returns (OneValueReply) {}
+    rpc Minus (TwoValueRequest) returns (OneValueReply) {}
+    rpc Multiply (TwoValueRequest) returns (OneValueReply) {}
+    rpc Divide (TwoValueRequest) returns (OneValueReply) {}
+}
+// [END service]
+
+// [START messages]
+// The request message containing two integer values.
+message TwoValueRequest {
+    int32 a = 1;
+    int32 b = 2;
+}
+
+// The response message containing one integer value.
+message OneValueReply {
+    int32 c = 1;
+}
+// [END messages]
