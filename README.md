@@ -1,11 +1,8 @@
 # gRPC Examples
 
-Lei Mao
-
 ## Introduction
 
-gRPC is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services. 
-
+gRPC C++ examples built with CMake.
 
 ## Dependencies
 
@@ -38,7 +35,22 @@ gRPC is a modern open source high performance RPC framework that can run in any 
 
 ## Usages
 
-### Compile
+### Build Docker Image
+
+```bash
+$ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-cmake:1.34.0 .
+```
+
+To build for different gRPC versions and use different number of CPU threads, please change the values in the build arguments.
+
+
+### Run Docker Container
+
+```bash
+$ docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
+```
+
+### Build Examples
 
 ```bash
 $ cmake -B buil
@@ -51,14 +63,14 @@ All the executable files would be generated in `build/grpc` directory.
 
 #### Arithmetics
 
-In one terminal,
+In one terminal, we start the gRPC server.
 
 ```bash
 $ ./build/grpc/arithmetics/arithmetics_server
 Server listening on 0.0.0.0:50051
 ```
 
-In another terminal,
+In another terminal, we start the gRPC client.
 
 ```bash
 $ ./build/grpc/arithmetics/arithmetics_client 
@@ -83,14 +95,14 @@ Please enter your binary arithmetic expression:
 
 #### Hello World
 
-In one terminal,
+In one terminal, we start the gRPC server.
 
 ```bash
 $ ./build/grpc/greetings/greetings_server 
 Server listening on 0.0.0.0:50051
 ```
 
-In another terminal,
+In another terminal, we start the gRPC client.
 
 ```bash
 $ ./build/grpc/greetings/greetings_client 
@@ -109,6 +121,6 @@ Hello Kobe Bryant!
 Please enter your user name:
 ```
 
-## Notes
+### References
 
-Users may also use the gRPC Dockerfile provided to create a Docker container to reproduce.
+* [gRPC Tutorial](https://leimao.github.io/blog/gRPC-Tutorial/)
