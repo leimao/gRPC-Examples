@@ -1,26 +1,18 @@
 # gRPC Examples
 
-Lei Mao
-
 ## Introduction
 
-gRPC is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication. It is also applicable in last mile of distributed computing to connect devices, mobile applications and browsers to backend services. The official gRPC tutorial mainly uses `make` to compile and its `CMake` compile system is no longer working. 
-
-
-In this repository, I implemented gRPC C++ examples using CMake with the best practice. I also put code comments as many as possible to make sure the code is human readable and easy to understand. Currently CMake only officially support Protobuf but not gRPC. The [FindGPRC](https://github.com/IvanSafonov/grpc-cmake-example/blob/master/cmake/FindGRPC.cmake) module for CMake was borrowed. Once CMake officially support gRPC, I will update this repository accordingly.
+gRPC C++ examples built with CMake.
 
 ## Dependencies
 
-* gRPC 1.20
-* Google Protocol Buffers 3.7.0
-* CMake 3.14.4+
+* gRPC 1.34
+* CMake 3.13.0+
 
 ## Files
 
 ```
 .
-├── cmake
-│   └── FindGRPC.cmake
 ├── CMakeLists.txt
 ├── docker
 │   └── grpc.Dockerfile
@@ -37,40 +29,51 @@ In this repository, I implemented gRPC C++ examples using CMake with the best pr
 ├── LICENSE.md
 ├── protos
 │   ├── arithmetics.proto
-│   ├── CMakeLists.txt
 │   └── greetings.proto
 └── README.md
 ```
 
 ## Usages
 
-### Compile
+### Build Docker Image
 
 ```bash
-$ mkdir -p build
-$ cd build
-$ cmake ..
-$ make
+$ docker build -f docker/grpc.Dockerfile --build-arg GPRC_VERSION=1.34.0 --build-arg NUM_JOBS=8 --tag grpc-cmake:1.34.0 .
 ```
 
-All the executable files would be generated in `build/bin` directory.
+To build for different gRPC versions and use different number of CPU threads, please change the values in the build arguments.
 
+
+### Run Docker Container
+
+```bash
+$ docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
+```
+
+### Build Examples
+
+```bash
+$ cmake -B build
+$ cmake --build build --config Release --parallel
+```
+
+All the executable files would be generated in `build/grpc` directory.
 
 ### Run Examples
 
 #### Arithmetics
 
-In one terminal,
+In one terminal, we start the gRPC server.
 
 ```bash
-$ ./bin/arithmetics_server 
+$ ./build/grpc/arithmetics/arithmetics_server
 Server listening on 0.0.0.0:50051
 ```
 
-In another terminal,
+In another terminal, we start the gRPC client.
 
 ```bash
-$ ./bin/arithmetics_client 
+$ ./build/grpc/arithmetics/arithmetics_client 
 Please enter your binary arithmetic expression:
 300 + 200
 gRPC returned: 
@@ -92,17 +95,17 @@ Please enter your binary arithmetic expression:
 
 #### Hello World
 
-In one terminal,
+In one terminal, we start the gRPC server.
 
 ```bash
-$ ./bin/greetings_server   
+$ ./build/grpc/greetings/greetings_server 
 Server listening on 0.0.0.0:50051
 ```
 
-In another terminal,
+In another terminal, we start the gRPC client.
 
 ```bash
-$ ./bin/greetings_client 
+$ ./build/grpc/greetings/greetings_client 
 Please enter your user name:
 Lei Mao
 gRPC returned: 
@@ -118,6 +121,6 @@ Hello Kobe Bryant!
 Please enter your user name:
 ```
 
-## Notes
+### References
 
-Users may also use the gRPC Dockerfile provided to create a Docker container to reproduce.
+* [gRPC Tutorial](https://leimao.github.io/blog/gRPC-Tutorial/)
