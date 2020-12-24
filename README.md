@@ -53,7 +53,7 @@ $ docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
 ### Build Examples
 
 ```bash
-$ cmake -B buil
+$ cmake -B build
 $ cmake --build build --config Release --parallel
 ```
 
