@@ -46,6 +46,8 @@ To build for different gRPC versions and use different number of CPU threads, pl
 
 ### Run Docker Container
 
+Two separate Docker containers should be started for the gRPC server and the gRPC client.
+
 ```bash
 $ docker run -it --rm --network host -v $(pwd):/mnt grpc-cmake:1.34.0
 ```
